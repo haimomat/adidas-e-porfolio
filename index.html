@@ -27,6 +27,7 @@
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+    html,body{max-width:100%;overflow-x:hidden}
     body{
       margin:0;
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -40,7 +41,7 @@
 
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
-    .page{width:min(calc(100% - 28px), var(--max)); margin:0 auto;}
+    .page{width:min(calc(100% - 28px), var(--max)); margin:0 auto;overflow-x:clip;}
 
     .hero-wrap{padding:20px 0 18px}
     .hero{
@@ -341,7 +342,7 @@
     }
     .figure-top.light .figure-label{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.08)}
     .figure-copy{position:relative;z-index:1;display:grid;gap:10px}
-    .figure-copy strong{font-size:clamp(1.35rem, 3vw, 2.2rem);line-height:.98;letter-spacing:-.04em;max-width:12ch}
+    .figure-copy strong{font-size:clamp(1.35rem, 3vw, 2.2rem);line-height:.98;letter-spacing:-.04em;max-width:12ch;overflow-wrap:anywhere}
     .figure-copy small{font-size:.92rem;opacity:.78;max-width:36ch}
     .figure-ui{position:relative;z-index:1;display:grid;gap:10px}
     .ui-line{height:12px;border-radius:999px;background:rgba(255,255,255,.12)}
@@ -349,6 +350,48 @@
     .ui-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
     .ui-box{height:62px;border-radius:18px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.08)}
     .figure-top.light .ui-box{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.06)}
+
+    .figure-top.has-image{
+      min-height:auto;
+      padding:14px;
+      gap:14px;
+      background:
+        radial-gradient(circle at top right, rgba(215,255,63,.12), transparent 32%),
+        linear-gradient(180deg, #fbfbf7 0%, #efefe7 100%);
+      color:var(--ink);
+    }
+    .figure-top.has-image::after{display:none}
+    .figure-top.has-image.dark{
+      background:
+        linear-gradient(135deg, rgba(215,255,63,.10), rgba(215,255,63,.02)),
+        linear-gradient(135deg, #101010 0%, #1a1a1a 50%, #232d10 100%);
+      color:#fff;
+    }
+    .figure-top.has-image.dark .figure-label{
+      background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.12);color:#fff;
+    }
+    .figure-image{
+      width:100%;
+      display:block;
+      border-radius:20px;
+      border:1px solid rgba(0,0,0,.08);
+      background:#fff;
+      box-shadow:0 8px 24px rgba(0,0,0,.06);
+    }
+    .figure-top.has-image.dark .figure-image{
+      border-color:rgba(255,255,255,.08);
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
+    }
+    .figure-image.portrait{
+      width:auto;
+      max-width:100%;
+      max-height:540px;
+      margin:0 auto;
+    }
+    @media (max-width:820px){
+      .figure-image.portrait{max-height:420px;}
+    }
+
     .figure-bottom{padding:16px 18px 18px;border-top:1px solid var(--line)}
     .figure-bottom strong{display:block;margin-bottom:6px;font-size:.96rem}
     .figure-bottom span{color:var(--muted);font-size:.92rem}
@@ -370,7 +413,7 @@
       background:linear-gradient(180deg,#f6ffe0 0%, #f1f7e2 100%);
       border-color:#d9e3b7;
     }
-    .quote .big{font-size:clamp(2rem,5vw,3.5rem);line-height:.86;letter-spacing:-.06em;font-weight:900;color:#1c250d;margin-bottom:10px}
+    .quote .big{font-size:clamp(2rem,5vw,3.5rem);line-height:.86;letter-spacing:-.06em;font-weight:900;color:#1c250d;margin-bottom:10px;overflow-wrap:anywhere}
 
     .zone{position:relative;overflow:hidden}
     .zone::after{content:"";position:absolute;right:-24px;bottom:-24px;width:110px;height:110px;border-radius:50%;background:rgba(215,255,63,.16)}
@@ -422,12 +465,20 @@
       .nav-links{display:none;width:100%;margin-top:12px;flex-direction:column;align-items:stretch}
       .nav-links.show{display:flex}
       .nav-links a{text-align:center}
-      .zone-grid,.grid-3,.grid-2,.refs{grid-template-columns:1fr}
+      .intro-grid,.summary,.zone-grid,.grid-3,.grid-2,.grid-4,.refs,.impact-grid{grid-template-columns:1fr}
       .hero-mini{grid-template-columns:1fr}
       .section-head,.section-body,.hero-inner{padding-left:22px;padding-right:22px}
+      .section-head{align-items:flex-start}
+      .section-no{font-size:3.2rem;line-height:.9}
       .hero{border-radius:28px}
       .step{grid-template-columns:1fr}
       .step-index{min-height:64px}
+      .figure-top{min-height:auto;padding:18px}
+      .ui-row{grid-template-columns:1fr}
+      .figure-copy strong,.section-title h2,.hero h1{max-width:none}
+      .quote .big{font-size:2.25rem}
+      .ring{width:132px;height:132px}
+      .ring::before{width:96px;height:96px}
     }
     @media print{
       .nav-wrap,.side{display:none!important}
@@ -549,19 +600,9 @@
           <p>The Ladder of Engagement shows that customers do not all engage with brands in the same way. Some users only view content, while others may comment, share, recommend or even help to generate ideas with the brand. In the workshop briefing, the Ladder of Engagement is presented as a model that explains different levels of customer engagement, ranging from lower-level actions such as ratings, reviews and discussions to higher-level participation such as collaboration and co-creation (Chaffey and Smith, 2022). The model is also different from the Ladder of Loyalty because it focuses on the depth of customer participation rather than repeat purchase alone (Smith and Zook, 2020). This is useful for marketers because it shows that digital audiences are not simply passive receivers of communication, but can also become active contributors to brand value. In practice, the higher levels of engagement are especially important because participation is usually uneven: Nielsen’s 90:9:1 rule suggests that most users remain passive, while only a small minority actively contribute content or collaborate (Nielsen, 2006).</p>
 
           <div class="figure">
-            <div class="figure-top">
+            <div class="figure-top has-image dark">
               <div class="figure-label">Figure 1</div>
-              <div class="figure-copy">
-                <strong>The Ladder of Engagement</strong>
-                <small>Framework visual placeholder for ratings, reviews, discussions, ideas and co-creation.</small>
-              </div>
-              <div class="figure-ui">
-                <div class="ui-line" style="width:42%"></div>
-                <div class="ui-line" style="width:58%"></div>
-                <div class="ui-line" style="width:75%"></div>
-                <div class="ui-line" style="width:88%"></div>
-                <div class="ui-line" style="width:100%"></div>
-              </div>
+              <img class="figure-image" src="src/image2.png" alt="The Ladder of Engagement framework">
             </div>
             <div class="figure-bottom">
               <strong>Figure 1: The Ladder of Engagement</strong>
@@ -574,10 +615,9 @@
 
           <div class="grid-2">
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 2</div>
-                <div class="figure-copy"><strong>adiClub ecosystem</strong><small>Ideal placement for a screenshot showing membership rewards, levels or perks.</small></div>
-                <div class="ui-row"><div class="ui-box"></div><div class="ui-box"></div><div class="ui-box"></div></div>
+                <img class="figure-image" src="src/image3.jpg" alt="adidas adiClub membership ecosystem screenshot">
               </div>
               <div class="figure-bottom">
                 <strong>Figure 2: adidas adiClub as a digital membership ecosystem</strong>
@@ -603,12 +643,9 @@
 
           <div class="grid-2">
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 3</div>
-                <div class="figure-copy"><strong>Customer review interface</strong><small>Use this area for a screenshot of rating stars, customer comments or product feedback on the adidas website.</small></div>
-                <div class="ui-line" style="width:94%"></div>
-                <div class="ui-line" style="width:76%"></div>
-                <div class="ui-line" style="width:56%"></div>
+                <img class="figure-image" src="src/image4.png" alt="Customer review interface on the adidas website">
               </div>
               <div class="figure-bottom">
                 <strong>Figure 3: Customer review interface on the adidas website</strong>
@@ -616,10 +653,9 @@
               </div>
             </div>
             <div class="figure">
-              <div class="figure-top">
+              <div class="figure-top has-image dark">
                 <div class="figure-label">Figure 4</div>
-                <div class="figure-copy"><strong>CONFIRMED for deeper engagement</strong><small>Curated launches, exclusive access and insider content help move users into deeper participation.</small></div>
-                <div class="ui-row"><div class="ui-box"></div><div class="ui-box"></div><div class="ui-box"></div></div>
+                <img class="figure-image" src="src/image5.jpg" alt="adidas CONFIRMED screenshot">
               </div>
               <div class="figure-bottom">
                 <strong>Figure 4: adidas CONFIRMED as a platform for deeper customer engagement</strong>
@@ -648,10 +684,9 @@
 
           <div class="grid-2">
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 5</div>
-                <div class="figure-copy"><strong>adidas Vietnam on TikTok</strong><small>Space for your screenshot of brand presence, interaction and social commerce within the app.</small></div>
-                <div class="ui-row"><div class="ui-box"></div><div class="ui-box"></div><div class="ui-box"></div></div>
+                <img class="figure-image portrait" src="src/image6.jpg" alt="adidas Vietnam TikTok account screenshot">
               </div>
               <div class="figure-bottom">
                 <strong>Figure 5: adidas Vietnam’s TikTok account as an example of brand presence, interaction and social commerce</strong>
@@ -659,12 +694,9 @@
               </div>
             </div>
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 6</div>
-                <div class="figure-copy"><strong>TikTok for Business</strong><small>Placeholder for business tools, campaign setup or full-funnel advertising support.</small></div>
-                <div class="ui-line" style="width:88%"></div>
-                <div class="ui-line" style="width:66%"></div>
-                <div class="ui-line" style="width:78%"></div>
+                <img class="figure-image" src="src/image7.jpg" alt="TikTok for Business screenshot">
               </div>
               <div class="figure-bottom">
                 <strong>Figure 6: TikTok for Business as a platform for advertising and full-funnel marketing</strong>
@@ -702,10 +734,9 @@
           <p>The selected criteria reflect important parts of website performance, including navigation, visual design, useful content, mobile responsiveness and trust and service information. Each criterion is assessed using a five-point scale (1–5), where higher scores indicate stronger usability, clarity and effectiveness in supporting both customer experience and brand communication.</p>
 
           <div class="figure">
-            <div class="figure-top light">
+            <div class="figure-top has-image">
               <div class="figure-label">Table 1</div>
-              <div class="figure-copy"><strong>Website checklist used to evaluate the adidas website</strong><small>Website analysed: adidas Vietnam website • Brand: adidas</small></div>
-              <div class="ui-row"><div class="ui-box"></div><div class="ui-box"></div><div class="ui-box"></div></div>
+              <img class="figure-image" src="src/image8.jpg" alt="Website checklist table used to evaluate the adidas website">
             </div>
             <div class="figure-bottom">
               <strong>Table 1: Website Checklist Used to Evaluate the adidas Website</strong>
@@ -715,16 +746,16 @@
 
           <div class="grid-2">
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 7</div>
-                <div class="figure-copy"><strong>Homepage of the adidas Vietnam website</strong><small>Ideal placement for the main homepage screenshot used in your portfolio.</small></div>
+                <img class="figure-image" src="src/image9.jpg" alt="Homepage of the adidas Vietnam website">
               </div>
               <div class="figure-bottom"><strong>Figure 7: Homepage of the adidas Vietnam website</strong><span>Source: Screenshot from adidas Vietnam website (adidas, n.d.c).</span></div>
             </div>
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 8</div>
-                <div class="figure-copy"><strong>Visual design and product presentation</strong><small>Use this for a clean product-grid or campaign screenshot showing brand presentation quality.</small></div>
+                <img class="figure-image portrait" src="src/image10.jpg" alt="Visual design and product presentation on the adidas website">
               </div>
               <div class="figure-bottom"><strong>Figure 8: Visual design and product presentation on the adidas website</strong><span>Source: Screenshot from adidas Vietnam website (adidas, n.d.c).</span></div>
             </div>
@@ -732,16 +763,16 @@
 
           <div class="grid-2">
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 9</div>
-                <div class="figure-copy"><strong>Product information and membership content</strong><small>Suitable for a screenshot of product pages, description content or member benefits.</small></div>
+                <img class="figure-image" src="src/image11.jpg" alt="Product information and membership content on the adidas website">
               </div>
               <div class="figure-bottom"><strong>Figure 9: Product information and membership content on the adidas website</strong><span>Source: Screenshot from adidas Vietnam website (adidas, n.d.c).</span></div>
             </div>
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 10</div>
-                <div class="figure-copy"><strong>Mobile responsiveness</strong><small>Area reserved for a mobile version screenshot showing layout clarity on smaller screens.</small></div>
+                <img class="figure-image portrait" src="src/image12.jpg" alt="Mobile version of the adidas website">
               </div>
               <div class="figure-bottom"><strong>Figure 10: Mobile version of the adidas website</strong><span>Source: Screenshot from adidas Vietnam website (adidas, n.d.c).</span></div>
             </div>
@@ -749,9 +780,9 @@
 
           <div class="grid-2">
             <div class="figure">
-              <div class="figure-top light">
+              <div class="figure-top has-image">
                 <div class="figure-label">Figure 11</div>
-                <div class="figure-copy"><strong>FAQ and support information</strong><small>Use this spot for a screenshot of help pages, support tools or service details.</small></div>
+                <img class="figure-image" src="src/image13.jpg" alt="FAQ and support information on the adidas Vietnam website">
               </div>
               <div class="figure-bottom"><strong>Figure 11: FAQ and support information on the adidas Vietnam website</strong><span>Source: Screenshot from adidas Vietnam website (adidas, n.d.d).</span></div>
             </div>
@@ -765,6 +796,14 @@
                 <p>The adidas website performs strongly overall. Navigation, design, content and mobile usability are all effective, while trust and service information also support confidence in the customer journey.</p>
               </div>
             </div>
+          </div>
+
+          <div class="figure" style="margin-top:10px;">
+            <div class="figure-top has-image">
+              <div class="figure-label">Score Summary</div>
+              <img class="figure-image" src="src/image14.jpg" alt="Website checklist score summary table">
+            </div>
+            <div class="figure-bottom"><strong>Website score summary</strong><span>Optional extracted table from the original Word file showing the same overall evaluation scores.</span></div>
           </div>
 
           <div class="grid-2" style="grid-template-columns:1fr;">
@@ -790,10 +829,9 @@
           <p>A digital trend that is particularly relevant to adidas is gamification in digital marketing, where brands use challenges, rewards and progress-based activities to increase user participation. This trend is especially suitable for sportswear brands because it fits naturally with ideas of performance, motivation and achievement. In digital marketing, consumers increasingly expect experiences that are interactive and enjoyable rather than only receiving one-way promotional messages. Gamification responds to this by making digital platforms more engaging and encouraging users to take part in activities linked to the brand.</p>
 
           <div class="figure">
-            <div class="figure-top">
+            <div class="figure-top has-image dark">
               <div class="figure-label">Figure 12</div>
-              <div class="figure-copy"><strong>Gamified challenge and activity tracking</strong><small>Use this figure area for an adidas Running app screenshot showing progress, tracking or challenge features.</small></div>
-              <div class="ui-row"><div class="ui-box"></div><div class="ui-box"></div><div class="ui-box"></div></div>
+              <img class="figure-image portrait" src="src/image15.jpg" alt="Gamified challenge and activity tracking in the adidas Running app">
             </div>
             <div class="figure-bottom"><strong>Figure 12: Gamified challenge and activity tracking in the adidas Running app</strong><span>Source: Screenshot from adidas Running app (adidas, n.d.e).</span></div>
           </div>
